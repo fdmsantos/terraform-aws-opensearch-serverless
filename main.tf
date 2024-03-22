@@ -49,3 +49,13 @@ resource "aws_opensearchserverless_access_policy" "this" {
   description = var.access_policy_description
   policy      = jsonencode(local.access_policy)
 }
+
+resource "aws_opensearchserverless_lifecycle_policy" "this" {
+  count       = var.create_data_lifecycle_policy ? 1 : 0
+  name        = local.data_lifecycle_policy_name
+  type        = "retention"
+  description = var.data_lifecycle_policy_description
+  policy = jsonencode({
+    "Rules" : local.data_lifecycle_policy
+  })
+}

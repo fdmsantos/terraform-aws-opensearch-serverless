@@ -16,6 +16,7 @@ Dynamic Terraform module, which creates a Opensearch Serverless Collection and r
         + [Network Policy](#network-policy)
             - [VPC Access](#vpc-access)
         + [Data Access Policy](#data-access-policy)
+        + [Data Lifecycle Policy](#data-lifecycle-policy)
     * [Examples](#examples)
     * [Requirements](#requirements)
     * [Providers](#providers)
@@ -38,6 +39,7 @@ Dynamic Terraform module, which creates a Opensearch Serverless Collection and r
 - Network Policy
 - Data Access Policy
 - Opensearch Serverless VPCE
+- Data Lifecycle Policy
 
 ## How to Use
 
@@ -50,7 +52,7 @@ This example will create:
     * Data Access Policy with all permissions to collection and all indexes
 
 ```hcl
-module "firehose" {
+module "opensearch_serverless" {
   source              = "fdmsantos/opensearch-serverless/aws"
   version             = "x.x.x"
   name                = "demo-collection"
@@ -104,6 +106,29 @@ Each rule contains the following fields:
 | principals  | IAM Users;IAM Roles;SAML users;SAML Groups                                                                           |
 | indexes     | List of indexes to be used on policy rule                                                                            |
 
+### Data Lifecycle Policy
+
+To create data lifecycle policy use variable `create_data_lifecycle_policy = true`. Configure the rules with variable `data_lifecycle_policy_rules` .
+The default retention is `Unlimited`.
+
+Example:
+
+```hcl
+data_lifecycle_policy_rules = [
+  {
+     indexes = ["index1", "index2"]
+     retention = "Unlimited"
+  },
+  {
+     indexes = ["index3", "index4"]
+     retention = "81d"
+  },
+  {
+     indexes = ["index5"]
+  }
+]
+```
+
 ## Examples
 
 - [Complete](https://github.com/fdmsantos/terraform-aws-opensearch-serverless/tree/main/examples/complete) - Creates an opensearch serverless collection with all features.
@@ -132,6 +157,7 @@ No modules.
 |------|------|
 | [aws_opensearchserverless_access_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_access_policy) | resource |
 | [aws_opensearchserverless_collection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_collection) | resource |
+| [aws_opensearchserverless_lifecycle_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_lifecycle_policy) | resource |
 | [aws_opensearchserverless_security_policy.encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_security_policy.network](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_vpc_endpoint.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_vpc_endpoint) | resource |
@@ -144,8 +170,12 @@ No modules.
 | <a name="input_access_policy_name"></a> [access\_policy\_name](#input\_access\_policy\_name) | The name of the data access policy. | `string` | `null` | no |
 | <a name="input_access_policy_rules"></a> [access\_policy\_rules](#input\_access\_policy\_rules) | Rules to apply on access policy. | <pre>list(object({<br>    type        = string<br>    permissions = list(string)<br>    principals  = list(string)<br>    indexes     = optional(list(string), [])<br>  }))</pre> | `[]` | no |
 | <a name="input_create_access_policy"></a> [create\_access\_policy](#input\_create\_access\_policy) | Controls if data access policy should be created. | `bool` | `true` | no |
+| <a name="input_create_data_lifecycle_policy"></a> [create\_data\_lifecycle\_policy](#input\_create\_data\_lifecycle\_policy) | Controls if data lifecycle policy should be created. | `bool` | `false` | no |
 | <a name="input_create_encryption_policy"></a> [create\_encryption\_policy](#input\_create\_encryption\_policy) | Controls if encryption policy should be created. | `bool` | `true` | no |
 | <a name="input_create_network_policy"></a> [create\_network\_policy](#input\_create\_network\_policy) | Controls if network policy should be created. | `bool` | `true` | no |
+| <a name="input_data_lifecycle_policy_description"></a> [data\_lifecycle\_policy\_description](#input\_data\_lifecycle\_policy\_description) | Description of the data lifecycle policy. | `string` | `null` | no |
+| <a name="input_data_lifecycle_policy_name"></a> [data\_lifecycle\_policy\_name](#input\_data\_lifecycle\_policy\_name) | The name of the data lifecycle policy. | `string` | `null` | no |
+| <a name="input_data_lifecycle_policy_rules"></a> [data\_lifecycle\_policy\_rules](#input\_data\_lifecycle\_policy\_rules) | Rules to apply on data lifecycle policy. | <pre>list(object({<br>    indexes   = list(string)<br>    retention = optional(string, "Unlimited")<br>  }))</pre> | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | Description of the collection. | `string` | `null` | no |
 | <a name="input_encryption_policy_description"></a> [encryption\_policy\_description](#input\_encryption\_policy\_description) | Description of the encryption policy. | `string` | `null` | no |
 | <a name="input_encryption_policy_kms_key_arn"></a> [encryption\_policy\_kms\_key\_arn](#input\_encryption\_policy\_kms\_key\_arn) | MS Customer managed key arn to use in the encryption policy. | `string` | `null` | no |
@@ -166,10 +196,14 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_access_policy_name"></a> [access\_policy\_name](#output\_access\_policy\_name) | Name of the data access policy. |
+| <a name="output_access_policy_version"></a> [access\_policy\_version](#output\_access\_policy\_version) | Version of the data access policy. |
 | <a name="output_collection_arn"></a> [collection\_arn](#output\_collection\_arn) | Amazon Resource Name (ARN) of the collection. |
 | <a name="output_collection_endpoint"></a> [collection\_endpoint](#output\_collection\_endpoint) | Collection-specific endpoint used to submit index, search, and data upload requests to an OpenSearch Serverless collection. |
 | <a name="output_collection_id"></a> [collection\_id](#output\_collection\_id) | Unique identifier for the collection. |
 | <a name="output_dashboard_endpoint"></a> [dashboard\_endpoint](#output\_dashboard\_endpoint) | Collection-specific endpoint used to access OpenSearch Dashboards. |
+| <a name="output_data_lifecycle_policy_name"></a> [data\_lifecycle\_policy\_name](#output\_data\_lifecycle\_policy\_name) | Name of the data lifecycle policy. |
+| <a name="output_data_lifecycle_policy_version"></a> [data\_lifecycle\_policy\_version](#output\_data\_lifecycle\_policy\_version) | Version of the data lifecycle access policy. |
 | <a name="output_encryption_policy_name"></a> [encryption\_policy\_name](#output\_encryption\_policy\_name) | Name of the encryption policy. |
 | <a name="output_encryption_policy_version"></a> [encryption\_policy\_version](#output\_encryption\_policy\_version) | Version of the encryption policy. |
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | The ARN of the Amazon Web Services KMS key used to encrypt the collection. |

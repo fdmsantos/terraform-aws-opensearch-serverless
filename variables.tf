@@ -150,3 +150,33 @@ variable "access_policy_rules" {
   }))
   default = []
 }
+
+######
+# Data Lifecycle Policy
+######
+variable "create_data_lifecycle_policy" {
+  description = "Controls if data lifecycle policy should be created."
+  type        = bool
+  default     = false
+}
+
+variable "data_lifecycle_policy_name" {
+  description = "The name of the data lifecycle policy."
+  type        = string
+  default     = null
+}
+
+variable "data_lifecycle_policy_description" {
+  description = "Description of the data lifecycle policy."
+  type        = string
+  default     = null
+}
+
+variable "data_lifecycle_policy_rules" {
+  description = "Rules to apply on data lifecycle policy."
+  type = list(object({
+    indexes   = list(string)
+    retention = optional(string, "Unlimited")
+  }))
+  default = []
+}

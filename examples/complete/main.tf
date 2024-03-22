@@ -33,6 +33,19 @@ module "opensearch_serverless" {
       principals  = [data.aws_caller_identity.current.arn]
     }
   ]
+  create_data_lifecycle_policy = true
+  data_lifecycle_policy_rules = [{
+    indexes = ["index1", "index2"]
+    },
+    {
+      indexes   = ["index3", "index4"]
+      retention = "81d"
+    },
+    {
+      indexes   = ["index5"]
+      retention = "Unlimited"
+    }
+  ]
   tags = {
     Environment : "Dev"
   }

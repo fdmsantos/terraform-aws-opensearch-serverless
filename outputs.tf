@@ -67,12 +67,25 @@ output "vpce_id" {
 #######
 ## Data Access Policy
 #######
-#output "access_policy_version" {
-#  description = "Version of the data access policy."
-#  value       = var.create_access_policy ? aws_opensearchserverless_access_policy.this[0].policy_version : null
-#}
-#
-#output "access_policy_name" {
-#  description = "Name of the data create_access_policy policy."
-#  value       = var.create_network_policy ? aws_opensearchserverless_access_policy.this[0].name : null
-#}
+output "access_policy_version" {
+  description = "Version of the data access policy."
+  value       = var.create_access_policy ? aws_opensearchserverless_access_policy.this[0].policy_version : null
+}
+
+output "access_policy_name" {
+  description = "Name of the data access policy."
+  value       = var.create_access_policy ? aws_opensearchserverless_access_policy.this[0].name : null
+}
+
+#######
+## Data Lifecycle Policy
+#######
+output "data_lifecycle_policy_version" {
+  description = "Version of the data lifecycle access policy."
+  value       = var.create_data_lifecycle_policy ? aws_opensearchserverless_lifecycle_policy.this[0].policy_version : null
+}
+
+output "data_lifecycle_policy_name" {
+  description = "Name of the data lifecycle policy."
+  value       = var.create_data_lifecycle_policy ? aws_opensearchserverless_lifecycle_policy.this[0].name : null
+}

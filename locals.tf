@@ -1,7 +1,8 @@
 locals {
-  encryption_policy_name = var.encryption_policy_name != null ? var.encryption_policy_name : "${var.name}-encryption-policy"
-  network_policy_name    = var.network_policy_name != null ? var.network_policy_name : "${var.name}-network-policy"
-  access_policy_name     = var.access_policy_name != null ? var.access_policy_name : "${var.name}-access-policy"
+  encryption_policy_name     = var.encryption_policy_name != null ? var.encryption_policy_name : "${var.name}-encryption-policy"
+  network_policy_name        = var.network_policy_name != null ? var.network_policy_name : "${var.name}-network-policy"
+  access_policy_name         = var.access_policy_name != null ? var.access_policy_name : "${var.name}-access-policy"
+  data_lifecycle_policy_name = var.data_lifecycle_policy_name != null ? var.data_lifecycle_policy_name : "${var.name}-data-lifecycle-policy"
 
   vpce_name            = var.vpce_name != null ? var.vpce_name : "${var.name}-vpce"
   create_vpce          = var.create_network_policy && var.network_policy_type != "AllPublic" ? true : false
@@ -95,4 +96,18 @@ locals {
     }],
     Principal = rule.principals
   }] : []
+
+  data_lifecycle_policy_unlimited = var.create_data_lifecycle_policy ? [for i, rule in var.data_lifecycle_policy_rules : {
+    ResourceType        = "index",
+    Resource            = [for i, index in rule.indexes : "index/${var.name}/${index}"]
+    NoMinIndexRetention = true
+  } if rule.retention == "Unlimited"] : null
+
+  data_lifecycle_policy_limited = var.create_data_lifecycle_policy ? [for i, rule in var.data_lifecycle_policy_rules : {
+    ResourceType      = "index",
+    Resource          = [for i, index in rule.indexes : "index/${var.name}/${index}"]
+    MinIndexRetention = rule.retention
+  } if rule.retention != "Unlimited"] : null
+
+  data_lifecycle_policy = var.create_data_lifecycle_policy ? concat(local.data_lifecycle_policy_unlimited, local.data_lifecycle_policy_limited) : null
 }
