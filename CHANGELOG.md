@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/fdmsantos/terraform-aws-opensearch-serverless/compare/v1.1.0...v1.2.0) (2024-03-23)
+
+
+### Features
+
+* Add support for security Config ([a5a3d10](https://github.com/fdmsantos/terraform-aws-opensearch-serverless/commit/a5a3d1050e5afce7b71d97f4215eab62c6dcccdf))
+
 ## [1.1.0](https://github.com/fdmsantos/terraform-aws-opensearch-serverless/compare/v1.0.0...v1.1.0) (2024-03-22)
 
 
