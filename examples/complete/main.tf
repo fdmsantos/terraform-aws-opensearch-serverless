@@ -34,8 +34,9 @@ module "opensearch_serverless" {
     }
   ]
   create_data_lifecycle_policy = true
-  data_lifecycle_policy_rules = [{
-    indexes = ["index1", "index2"]
+  data_lifecycle_policy_rules = [
+    {
+      indexes = ["index1", "index2"]
     },
     {
       indexes   = ["index3", "index4"]

@@ -1,10 +1,4 @@
 locals {
-  encryption_policy_name     = var.encryption_policy_name != null ? var.encryption_policy_name : "${var.name}-encryption-policy"
-  network_policy_name        = var.network_policy_name != null ? var.network_policy_name : "${var.name}-network-policy"
-  access_policy_name         = var.access_policy_name != null ? var.access_policy_name : "${var.name}-access-policy"
-  data_lifecycle_policy_name = var.data_lifecycle_policy_name != null ? var.data_lifecycle_policy_name : "${var.name}-data-lifecycle-policy"
-
-  vpce_name            = var.vpce_name != null ? var.vpce_name : "${var.name}-vpce"
   create_vpce          = var.create_network_policy && var.network_policy_type != "AllPublic" ? true : false
   network_policy_vpces = local.create_vpce ? [aws_opensearchserverless_vpc_endpoint.this[0].id] : null
   network_policies = {
