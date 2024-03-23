@@ -17,6 +17,7 @@ Dynamic Terraform module, which creates a Opensearch Serverless Collection and r
             - [VPC Access](#vpc-access)
         + [Data Access Policy](#data-access-policy)
         + [Data Lifecycle Policy](#data-lifecycle-policy)
+        + [Security Config](#security-config)
     * [Examples](#examples)
     * [Requirements](#requirements)
     * [Providers](#providers)
@@ -40,6 +41,7 @@ Dynamic Terraform module, which creates a Opensearch Serverless Collection and r
 - Data Access Policy
 - Opensearch Serverless VPCE
 - Data Lifecycle Policy
+- Security Config
 
 ## How to Use
 
@@ -129,6 +131,17 @@ data_lifecycle_policy_rules = [
 ]
 ```
 
+### Security Config
+
+To create security config use variable `create_security_config = true`.
+```hcl
+create_security_config = true
+saml_metadata          = "${path.module}/saml-metadata.xml"
+saml_user_attribute    = "example"
+saml_group_attribute   = "example"
+saml_session_timeout   = 90
+```
+
 ## Examples
 
 - [Complete](https://github.com/fdmsantos/terraform-aws-opensearch-serverless/tree/main/examples/complete) - Creates an opensearch serverless collection with all features.
@@ -158,6 +171,7 @@ No modules.
 | [aws_opensearchserverless_access_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_access_policy) | resource |
 | [aws_opensearchserverless_collection.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_collection) | resource |
 | [aws_opensearchserverless_lifecycle_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_lifecycle_policy) | resource |
+| [aws_opensearchserverless_security_config.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_config) | resource |
 | [aws_opensearchserverless_security_policy.encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_security_policy.network](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_vpc_endpoint.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_vpc_endpoint) | resource |
@@ -173,6 +187,7 @@ No modules.
 | <a name="input_create_data_lifecycle_policy"></a> [create\_data\_lifecycle\_policy](#input\_create\_data\_lifecycle\_policy) | Controls if data lifecycle policy should be created. | `bool` | `false` | no |
 | <a name="input_create_encryption_policy"></a> [create\_encryption\_policy](#input\_create\_encryption\_policy) | Controls if encryption policy should be created. | `bool` | `true` | no |
 | <a name="input_create_network_policy"></a> [create\_network\_policy](#input\_create\_network\_policy) | Controls if network policy should be created. | `bool` | `true` | no |
+| <a name="input_create_security_config"></a> [create\_security\_config](#input\_create\_security\_config) | Controls if security config should be created. | `bool` | `false` | no |
 | <a name="input_data_lifecycle_policy_description"></a> [data\_lifecycle\_policy\_description](#input\_data\_lifecycle\_policy\_description) | Description of the data lifecycle policy. | `string` | `null` | no |
 | <a name="input_data_lifecycle_policy_name"></a> [data\_lifecycle\_policy\_name](#input\_data\_lifecycle\_policy\_name) | The name of the data lifecycle policy. | `string` | `null` | no |
 | <a name="input_data_lifecycle_policy_rules"></a> [data\_lifecycle\_policy\_rules](#input\_data\_lifecycle\_policy\_rules) | Rules to apply on data lifecycle policy. | <pre>list(object({<br>    indexes   = list(string)<br>    retention = optional(string, "Unlimited")<br>  }))</pre> | `[]` | no |
@@ -184,6 +199,12 @@ No modules.
 | <a name="input_network_policy_description"></a> [network\_policy\_description](#input\_network\_policy\_description) | Description of the network policy. | `string` | `null` | no |
 | <a name="input_network_policy_name"></a> [network\_policy\_name](#input\_network\_policy\_name) | The name of the network policy. | `string` | `null` | no |
 | <a name="input_network_policy_type"></a> [network\_policy\_type](#input\_network\_policy\_type) | Type of Network Policy. Supported Values are: AllPublic, AllPrivate, PublicCollectionPrivateDashboard, PrivateCollectionPublicDashboard | `string` | `"AllPublic"` | no |
+| <a name="input_saml_group_attribute"></a> [saml\_group\_attribute](#input\_saml\_group\_attribute) | Specify an attribute for group to map user groups or roles from your assertion. | `string` | `null` | no |
+| <a name="input_saml_metadata"></a> [saml\_metadata](#input\_saml\_metadata) | The XML IdP metadata file generated from your identity provider. Needs to be path to a file. | `string` | `null` | no |
+| <a name="input_saml_session_timeout"></a> [saml\_session\_timeout](#input\_saml\_session\_timeout) | Session timeout, in minutes. Minimum is 5 minutes and maximum is 720 minutes (12 hours). Default is 60 minutes. | `number` | `60` | no |
+| <a name="input_saml_user_attribute"></a> [saml\_user\_attribute](#input\_saml\_user\_attribute) | Specify a custom attribute for user ID if your assertion does not use NameID as the default attribute. | `string` | `null` | no |
+| <a name="input_security_config_description"></a> [security\_config\_description](#input\_security\_config\_description) | Description of the security config. | `string` | `null` | no |
+| <a name="input_security_config_name"></a> [security\_config\_name](#input\_security\_config\_name) | The name of the security config. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the collection. If configured with a provider default\_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
 | <a name="input_type"></a> [type](#input\_type) | Type of collection. One of SEARCH, TIMESERIES, or VECTORSEARCH. Defaults to TIMESERIES. | `string` | `"TIMESERIES"` | no |
 | <a name="input_use_standby_replicas"></a> [use\_standby\_replicas](#input\_use\_standby\_replicas) | Indicates whether standby replicas should be used for a collection. | `bool` | `true` | no |
@@ -209,6 +230,8 @@ No modules.
 | <a name="output_kms_key_arn"></a> [kms\_key\_arn](#output\_kms\_key\_arn) | The ARN of the Amazon Web Services KMS key used to encrypt the collection. |
 | <a name="output_network_policy_name"></a> [network\_policy\_name](#output\_network\_policy\_name) | Name of the network policy. |
 | <a name="output_network_policy_version"></a> [network\_policy\_version](#output\_network\_policy\_version) | Version of the network policy. |
+| <a name="output_security_config_name"></a> [security\_config\_name](#output\_security\_config\_name) | Name of the security config. |
+| <a name="output_security_config_version"></a> [security\_config\_version](#output\_security\_config\_version) | Version of the security config. |
 | <a name="output_vpce_id"></a> [vpce\_id](#output\_vpce\_id) | Id of the vpce. |
 | <a name="output_vpce_name"></a> [vpce\_name](#output\_vpce\_name) | Name of the interface endpoint. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

@@ -59,3 +59,16 @@ resource "aws_opensearchserverless_lifecycle_policy" "this" {
     "Rules" : local.data_lifecycle_policy
   })
 }
+
+resource "aws_opensearchserverless_security_config" "this" {
+  count       = var.create_security_config ? 1 : 0
+  name        = coalesce(var.security_config_name, "${var.name}-security-config")
+  description = var.security_config_description
+  type        = "saml"
+  saml_options {
+    metadata        = file(var.saml_metadata)
+    group_attribute = var.saml_group_attribute
+    user_attribute  = var.saml_user_attribute
+    session_timeout = var.saml_session_timeout
+  }
+}

@@ -59,4 +59,8 @@ Note that this example may create resources which cost money. Run `terraform des
 | <a name="output_collection_endpoint"></a> [collection\_endpoint](#output\_collection\_endpoint) | Collection-specific endpoint used to submit index, search, and data upload requests to an OpenSearch Serverless collection. |
 | <a name="output_collection_id"></a> [collection\_id](#output\_collection\_id) | Unique identifier for the collection. |
 | <a name="output_dashboard_endpoint"></a> [dashboard\_endpoint](#output\_dashboard\_endpoint) | Collection-specific endpoint used to access OpenSearch Dashboards. |
+| <a name="output_data_access_policy_version"></a> [data\_access\_policy\_version](#output\_data\_access\_policy\_version) | Data Access policy version. |
+| <a name="output_data_lifecycle_policy_version"></a> [data\_lifecycle\_policy\_version](#output\_data\_lifecycle\_policy\_version) | Data Lifecycle policy version. |
+| <a name="output_encrypt_policy_version"></a> [encrypt\_policy\_version](#output\_encrypt\_policy\_version) | Encryption policy version. |
+| <a name="output_network_policy_version"></a> [network\_policy\_version](#output\_network\_policy\_version) | Network policy version. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

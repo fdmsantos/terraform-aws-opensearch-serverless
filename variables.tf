@@ -180,3 +180,48 @@ variable "data_lifecycle_policy_rules" {
   }))
   default = []
 }
+
+######
+# Security Config
+######
+variable "create_security_config" {
+  description = "Controls if security config should be created."
+  type        = bool
+  default     = false
+}
+
+variable "security_config_name" {
+  description = "The name of the security config."
+  type        = string
+  default     = null
+}
+
+variable "security_config_description" {
+  description = "Description of the security config."
+  type        = string
+  default     = null
+}
+
+variable "saml_metadata" {
+  description = "The XML IdP metadata file generated from your identity provider. Needs to be path to a file."
+  type        = string
+  default     = null
+}
+
+variable "saml_group_attribute" {
+  description = "Specify an attribute for group to map user groups or roles from your assertion."
+  type        = string
+  default     = null
+}
+
+variable "saml_user_attribute" {
+  description = "Specify a custom attribute for user ID if your assertion does not use NameID as the default attribute."
+  type        = string
+  default     = null
+}
+
+variable "saml_session_timeout" {
+  description = "Session timeout, in minutes. Minimum is 5 minutes and maximum is 720 minutes (12 hours). Default is 60 minutes."
+  type        = number
+  default     = 60
+}

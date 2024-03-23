@@ -89,3 +89,16 @@ output "data_lifecycle_policy_name" {
   description = "Name of the data lifecycle policy."
   value       = var.create_data_lifecycle_policy ? aws_opensearchserverless_lifecycle_policy.this[0].name : null
 }
+
+######
+# Security Config
+######
+output "security_config_version" {
+  description = "Version of the security config."
+  value       = var.create_security_config ? aws_opensearchserverless_security_config.this[0].config_version : null
+}
+
+output "security_config_name" {
+  description = "Name of the security config."
+  value       = var.create_security_config ? aws_opensearchserverless_security_config.this[0].name : null
+}
