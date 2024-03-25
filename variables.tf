@@ -120,6 +120,36 @@ variable "vpce_security_group_ids" {
 }
 
 ######
+# VPCE Security Group
+######
+variable "vpce_create_security_group" {
+  description = "Creates a security group for VPCE."
+  type        = bool
+  default     = true
+}
+
+variable "vpce_security_group_name" {
+  description = "Security Group name for VPCE."
+  type        = string
+  default     = null
+}
+
+variable "vpce_security_group_description" {
+  description = "Security Group description for VPCE."
+  type        = string
+  default     = null
+}
+
+variable "vpce_security_group_sources" {
+  description = "Sources for inbound traffic to Opensearch Serverless"
+  type = list(object({
+    type    = string
+    sources = list(string)
+  }))
+  default = []
+}
+
+######
 # Data Access Policy
 ######
 variable "create_access_policy" {

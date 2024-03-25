@@ -38,7 +38,17 @@ output "data_lifecycle_policy_version" {
   value       = module.opensearch_serverless.data_lifecycle_policy_version
 }
 
-#output "security_config_version" {
-#  description = "Security Config version."
-#  value       = module.opensearch_serverless.security_config_version
-#}
+output "security_config_version" {
+  description = "Security Config version."
+  value       = module.opensearch_serverless.security_config_version
+}
+
+output "security_group_id" {
+  description = "Id of the security group."
+  value       = module.opensearch_serverless.security_group_id
+}
+
+output "security_group_name" {
+  description = "Name of the security group."
+  value       = module.opensearch_serverless.security_group_name
+}

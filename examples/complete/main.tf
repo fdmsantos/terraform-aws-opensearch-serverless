@@ -15,6 +15,16 @@ module "opensearch_serverless" {
   network_policy_type = "PublicCollectionPrivateDashboard"
   vpce_vpc_id         = module.vpc.vpc_id
   vpce_subnet_ids     = [module.vpc.private_subnets[0]]
+  vpce_security_group_sources = [
+    {
+      type    = "IPv4"
+      sources = ["0.0.0.0/0"]
+    },
+    {
+      type    = "IPv6"
+      sources = ["::/0"]
+    }
+  ]
   access_policy_rules = [
     {
       type        = "collection"

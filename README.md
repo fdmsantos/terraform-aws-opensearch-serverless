@@ -15,6 +15,7 @@ Dynamic Terraform module, which creates a Opensearch Serverless Collection and r
         + [Encryption Policy](#encryption-policy)
         + [Network Policy](#network-policy)
             - [VPC Access](#vpc-access)
+              - [Security Group](#security-group)
         + [Data Access Policy](#data-access-policy)
         + [Data Lifecycle Policy](#data-lifecycle-policy)
         + [Security Config](#security-config)
@@ -94,6 +95,33 @@ To change the network policy use variable `network_policy_type`. The supported v
 
 If the variable `network_policy_type` is different from "AllPublic", the module will create Opensearch Serverless Endpoint to private access.
 In this case it's necessary configure the following variables: `vpce_subnet_ids` and `vpce_vpc_id`. `vpce_security_group_ids` is optional.
+
+##### Security Group
+
+* To add existing security group, please use the variable `vpce_security_group_ids`.
+* By Default, module creates a new security group. To disable this put the variable `vpce_create_security_group = false`.
+* To choose the allowed sources for the created security group, you should use the variable `vpce_security_group_sources`.
+  * This variable supports two fields:
+
+| Field   | Allowed Values                                                                              |
+|---------|---------------------------------------------------------------------------------------------|
+| type    | IPv4, IPv6, PrefixLists, SGs                                                                |
+| sources | List of sources to be allowed. For example: To type IPv4 should be list of IPv4 CIDR blocks |
+
+* Example:
+
+```hcl
+vpce_security_group_sources = [
+    {
+      type    = "IPv4"
+      sources = ["0.0.0.0/0"]
+    },
+    {
+      type    = "IPv6"
+      sources = ["::/0"]
+    }
+]
+```
 
 ### Data Access Policy
 
@@ -175,6 +203,7 @@ No modules.
 | [aws_opensearchserverless_security_policy.encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_security_policy.network](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_security_policy) | resource |
 | [aws_opensearchserverless_vpc_endpoint.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/opensearchserverless_vpc_endpoint) | resource |
+| [aws_security_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 
 ## Inputs
 
@@ -208,8 +237,12 @@ No modules.
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to assign to the collection. If configured with a provider default\_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level. | `map(string)` | `{}` | no |
 | <a name="input_type"></a> [type](#input\_type) | Type of collection. One of SEARCH, TIMESERIES, or VECTORSEARCH. Defaults to TIMESERIES. | `string` | `"TIMESERIES"` | no |
 | <a name="input_use_standby_replicas"></a> [use\_standby\_replicas](#input\_use\_standby\_replicas) | Indicates whether standby replicas should be used for a collection. | `bool` | `true` | no |
+| <a name="input_vpce_create_security_group"></a> [vpce\_create\_security\_group](#input\_vpce\_create\_security\_group) | Creates a security group for VPCE. | `bool` | `true` | no |
 | <a name="input_vpce_name"></a> [vpce\_name](#input\_vpce\_name) | Name of the interface endpoint. | `string` | `null` | no |
+| <a name="input_vpce_security_group_description"></a> [vpce\_security\_group\_description](#input\_vpce\_security\_group\_description) | Security Group description for VPCE. | `string` | `null` | no |
 | <a name="input_vpce_security_group_ids"></a> [vpce\_security\_group\_ids](#input\_vpce\_security\_group\_ids) | One or more security groups that define the ports, protocols, and sources for inbound traffic that you are authorizing into your endpoint. Up to 5 security groups can be provided. | `list(string)` | `null` | no |
+| <a name="input_vpce_security_group_name"></a> [vpce\_security\_group\_name](#input\_vpce\_security\_group\_name) | Security Group name for VPCE. | `string` | `null` | no |
+| <a name="input_vpce_security_group_sources"></a> [vpce\_security\_group\_sources](#input\_vpce\_security\_group\_sources) | Sources for inbound traffic to Opensearch Serverless | <pre>list(object({<br>    type    = string<br>    sources = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_vpce_subnet_ids"></a> [vpce\_subnet\_ids](#input\_vpce\_subnet\_ids) | One or more subnet IDs from which you'll access OpenSearch Serverless. Up to 6 subnets can be provided. | `list(string)` | `[]` | no |
 | <a name="input_vpce_vpc_id"></a> [vpce\_vpc\_id](#input\_vpce\_vpc\_id) | ID of the VPC from which you'll access OpenSearch Serverless. | `string` | `null` | no |
 
@@ -232,6 +265,8 @@ No modules.
 | <a name="output_network_policy_version"></a> [network\_policy\_version](#output\_network\_policy\_version) | Version of the network policy. |
 | <a name="output_security_config_name"></a> [security\_config\_name](#output\_security\_config\_name) | Name of the security config. |
 | <a name="output_security_config_version"></a> [security\_config\_version](#output\_security\_config\_version) | Version of the security config. |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | Id of the security group. |
+| <a name="output_security_group_name"></a> [security\_group\_name](#output\_security\_group\_name) | Name of the security group. |
 | <a name="output_vpce_id"></a> [vpce\_id](#output\_vpce\_id) | Id of the vpce. |
 | <a name="output_vpce_name"></a> [vpce\_name](#output\_vpce\_name) | Name of the interface endpoint. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

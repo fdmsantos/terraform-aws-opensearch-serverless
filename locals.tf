@@ -1,5 +1,7 @@
 locals {
   create_vpce          = var.create_network_policy && var.network_policy_type != "AllPublic" ? true : false
+  crate_sg             = local.create_vpce && var.vpce_create_security_group
+  sg_name              = coalesce(var.vpce_security_group_name, "${var.name}-sg")
   network_policy_vpces = local.create_vpce ? [aws_opensearchserverless_vpc_endpoint.this[0].id] : null
   network_policies = {
     AllPublic = [{

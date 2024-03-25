@@ -72,3 +72,29 @@ resource "aws_opensearchserverless_security_config" "this" {
     session_timeout = var.saml_session_timeout
   }
 }
+
+##################
+# Security Group
+##################
+resource "aws_security_group" "this" {
+  count       = local.crate_sg ? 1 : 0
+  name        = local.sg_name
+  description = var.vpce_security_group_description
+  vpc_id      = var.vpce_vpc_id
+  ingress {
+    from_port        = 443
+    to_port          = 443
+    protocol         = "tcp"
+    cidr_blocks      = flatten([for i, item in var.vpce_security_group_sources : [for k, source in item.sources : source] if item.type == "IPv4"])
+    ipv6_cidr_blocks = flatten([for i, item in var.vpce_security_group_sources : [for k, source in item.sources : source] if item.type == "IPv6"])
+    prefix_list_ids  = flatten([for i, item in var.vpce_security_group_sources : [for k, source in item.sources : source] if item.type == "PrefixLists"])
+    security_groups  = flatten([for i, item in var.vpce_security_group_sources : [for k, source in item.sources : source] if item.type == "SGs"])
+    description      = "Allow Inbound HTTPS Traffic"
+  }
+  tags = merge(
+    var.tags,
+    {
+      Name : local.sg_name
+    }
+  )
+}

@@ -63,4 +63,7 @@ Note that this example may create resources which cost money. Run `terraform des
 | <a name="output_data_lifecycle_policy_version"></a> [data\_lifecycle\_policy\_version](#output\_data\_lifecycle\_policy\_version) | Data Lifecycle policy version. |
 | <a name="output_encrypt_policy_version"></a> [encrypt\_policy\_version](#output\_encrypt\_policy\_version) | Encryption policy version. |
 | <a name="output_network_policy_version"></a> [network\_policy\_version](#output\_network\_policy\_version) | Network policy version. |
+| <a name="output_security_config_version"></a> [security\_config\_version](#output\_security\_config\_version) | Security Config version. |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | Id of the security group. |
+| <a name="output_security_group_name"></a> [security\_group\_name](#output\_security\_group\_name) | Name of the security group. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

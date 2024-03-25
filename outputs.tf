@@ -65,6 +65,18 @@ output "vpce_id" {
 }
 
 #######
+## Security Group
+#######
+output "security_group_id" {
+  description = "Id of the security group."
+  value       = local.crate_sg ? aws_security_group.this[0].id : null
+}
+
+output "security_group_name" {
+  description = "Name of the security group."
+  value       = local.crate_sg ? aws_security_group.this[0].name : null
+}
+#######
 ## Data Access Policy
 #######
 output "access_policy_version" {
