@@ -57,11 +57,11 @@ module "opensearch_serverless" {
       retention = "Unlimited"
     }
   ]
-  #  create_security_config = true
-  #  saml_metadata          = "${path.module}/saml-metadata.xml"
-  #  saml_user_attribute    = "example"
-  #  saml_group_attribute   = "example"
-  #  saml_session_timeout   = 90
+  create_security_config = true
+  saml_metadata          = "${path.module}/saml-metadata.xml"
+  saml_user_attribute    = "example"
+  saml_group_attribute   = "example"
+  saml_session_timeout   = 90
   tags = {
     Environment : "Dev"
   }
